@@ -2,6 +2,10 @@ import express, { Request, Response } from "express";
 import * as dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
+import { member } from "./member/route";
+import { auth } from "./auth/route";
+import { income } from "./income/route";
+import { useSwagger } from "../middleware/swagger";
 
 dotenv.config();
 
@@ -12,11 +16,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(helmet());
 
-app.use("/", (req: Request, res: Response) => {
-  let response = "Welcome to the API\n";
-  response = response + "<p>My name is Meitat Khamchaat</p>";
-  res.send(response);
-});
+app.use("/auth", auth);
+
+app.use("/member", member);
+
+app.use("/income", income);
+
+useSwagger(app);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
