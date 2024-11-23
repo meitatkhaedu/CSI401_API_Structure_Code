@@ -1,11 +1,26 @@
-# syntax=docker/dockerfile:1
+# Dockerfile
 
-ARG NODE_VERSION=18.0.0
+# Using the Node.js base image
+FROM node:22.9.0
 
-FROM node:${NODE_VERSION}-alpine as base
-WORKDIR /usr/src/app
-EXPOSE 3000
+# Set Working Directory
+WORKDIR /app
 
-FROM base as dev
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Include and Install dependencies
+RUN yarn
+
+# Copy all project files into container
 COPY . .
-CMD npm run dev
+
+# Set ENV when you use ENV file
+ENV PORT=55100
+ENV ConnectionString=mongodb://mongo:27017/yourDatabaseName
+
+# Running Port or Default Port
+EXPOSE 55100
+
+# Start Command
+CMD ["yarn", "nodemon"]

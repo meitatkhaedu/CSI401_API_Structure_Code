@@ -1,0 +1,19 @@
+version: "1.0"
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "33100:55100"
+    environment:
+      - PORT=55100
+      - ConnectionString=mongodb://mongo:27017/yourDatabaseName
+    depends_on:
+      - app
+
+  app:
+    image: thaibmaplatformportal:latest
+    container_name: thaibma-ssp
+    ports:
+      - "33101:15100"
